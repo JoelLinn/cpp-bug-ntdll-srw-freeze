@@ -1,9 +1,9 @@
-﻿#include <cassert>
-#include <iostream>
+﻿#include <assert.h>
+#include <stdio.h>
 
 #include <Windows.h>
 
-SRWLOCK rwlock = {};
+SRWLOCK rwlock;
 
 HANDLE thread_a;
 HANDLE thread_b;
@@ -14,7 +14,7 @@ DWORD WINAPI main_spin(LPCSTR ident) {
     while (i < 10) {
         {
             AcquireSRWLockExclusive(&rwlock);
-            std::cout << ident << " spinning..  " << ++i << std::endl;
+            printf("%s spinning... %d\n", ident, ++i);
             ReleaseSRWLockExclusive(&rwlock);
         }
         Sleep(100);
@@ -40,7 +40,7 @@ int main()
 
     {
         AcquireSRWLockExclusive(&rwlock);
-        std::cout << "I'm in danger..." << std::endl;
+        printf("I'm in danger...\n");
         Sleep(500);
         // Suspend thread 'a' which is trying to lock the mutex_
         SuspendThread(thread_a);

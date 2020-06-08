@@ -2,5 +2,5 @@
 
 project ("cpp-bug-ntdll-srw-freeze")
 
-add_executable (works "main_works.cpp")
-add_executable (fails "main_fails.cpp")
+add_executable (works "main_works.c")
+add_executable (fails "main_fails.c")

@@ -1,5 +1,5 @@
-﻿#include <cassert>
-#include <iostream>
+﻿#include <assert.h>
+#include <stdio.h>
 
 #include <Windows.h>
 
@@ -14,7 +14,7 @@ DWORD WINAPI main_spin(LPCSTR ident) {
     while (i < 10) {
         {
             assert(WaitForSingleObject(mutex, INFINITE) == WAIT_OBJECT_0);
-            std::cout << ident << " spinning..  " << ++i << std::endl;
+            printf("%s spinning... %d\n", ident, ++i);
             ReleaseMutex(mutex);
         }
         Sleep(100);
@@ -29,7 +29,7 @@ int main()
     mutex = CreateMutexA(NULL, FALSE, "global_critical_region");
     assert(mutex);
 
-    thread_a = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)main_spin, "A" , 0, NULL);
+    thread_a = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)main_spin, "A", 0, NULL);
     assert(thread_a);
     SetThreadDescription(thread_a, L"main_spin_A");
 
@@ -41,7 +41,7 @@ int main()
 
     {
         assert(WaitForSingleObject(mutex, INFINITE) == WAIT_OBJECT_0);
-        std::cout << "I'm in danger..." << std::endl;
+        printf("I'm in danger...\n");
         Sleep(500);
         // Suspend thread 'a' which is trying to lock the mutex_
         SuspendThread(thread_a);
